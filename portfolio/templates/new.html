@@ -6,8 +6,8 @@
 <body>
         <br>
         <br>
-        <div class="container">
-            <form method="POST">
+        <div class="container" >
+            <form method="POST" action="{% url 'new' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <table>
                 {{ form.as_table }}

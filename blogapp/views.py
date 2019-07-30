@@ -4,6 +4,8 @@ from django.core.paginator import Paginator
 from django.utils import timezone
 from .form import BlogPost
 
+
+
 # Create your views here.
 def home(request): 
     blogs=Blog.objects.all().order_by('-id') #식빵 #붕어빵틀안에 붕어빵들을 넣어라 뒤에 .all부터는 붕어빵의 순서를 배치
@@ -20,7 +22,16 @@ def detail(request, blog_id):
     details=get_object_or_404(Blog, pk=blog_id) #pk(프라이머리키)는 고유값을 가져야함
     return render(request,'detail.html',{'details':details})
 def new(request):
-    return render(request, 'new.html')
+    if request.method=='POST':
+        form=BlogPost(request.POST)
+        if form.is_valid():#폼에 다 입력되었는지 검사하는 함수
+            post = form.save(commit=False) #아직 저장하지말아라
+            post.pub_data=timezone.now() #폼에서 입력하지않은 시간을 등록해라
+            form.save() #시간을 등록하였으면 저장을 하라
+            return redirect('home')
+    else:
+       return render(request,'new.html',{'form':form})
+       
 def create(request): 
     blog=Blog()
     blog.title=request.GET['title']
@@ -36,9 +47,22 @@ def blogpost(request):
         if form.is_valid():#폼에 다 입력되었는지 검사하는 함수
             post = form.save(commit=False) #아직 저장하지말아라
             post.pub_data=timezone.now() #폼에서 입력하지않은 시간을 등록해라
-            post.save() #시간을 등록하였으면 저장을 하라
+            form.save() #시간을 등록하였으면 저장을 하라
             return redirect('home')
     else:
         form=BlogPost()
         return render(request,'new.html',{'form':form})
 #빈페이지를 띄워주는 기능->get
+
+#def search(request):
+ #   post_list = Blog.objects.all()
+  #  keyword = request.GET.get('keyword', '')
+
+   # if keyword:
+    #    post_list = post_list.filter(title__icontains=keyword)
+
+    #posts = paginator(request, post_list, 3)
+    #return render(request, "search.html", {
+     #   'posts': posts,
+     #   'keyword': keyword
+    #})

@@ -14,4 +14,5 @@ urlpatterns = [
     path('blog/', include('blogapp.urls')),
     path('accounts/', include('accounts.urls')),
     path('portfolio/',portfolio.views.portfolio,name="portfolio"),
+    path('portfolio/new',portfolio.views.new,name="newportfolio"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #외부에서 자료를 받기때문에 

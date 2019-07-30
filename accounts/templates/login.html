@@ -1,16 +1,21 @@
-{%extends 'base.html'%}
-{%block contents%}
-<h1>로그인 페이지 입니다</h1>
+{% extends 'base.html' %}
+{% block contents %}
+<div class="container">
+    <br>
+    <h1>Login</h1>
+    <br>
+    {% if error %}
+        <p> {{ error }} </p>
+    {% else %}
+        <p> Please fill out the form below. </p>
+    {% endif %}
 
-<form  method="POST" action="{%url 'login'%}">
-    {%csrf_token%}
-    username:<br>
-    <input name="username" type="text" value="">
-    <br>
-    password:<br>
-    <input name="password1" type="password" value="">
-    <br>
-    <br>
-    <input class="btn btn-primary" type="submit" value="로그인">
+<form action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+    {{form}}
+    <br><br>
+    <input type="submit" name="" value="Login" class="btn btn-primary">
 </form>
+
+</div>
 {% endblock %}
